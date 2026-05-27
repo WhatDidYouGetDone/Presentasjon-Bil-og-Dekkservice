@@ -1,0 +1,2929 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styreanalyse 2025 - Bil og Dekkservice AS</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: rgba(17, 24, 39, 0.7);
+            --border-card: rgba(255, 255, 255, 0.08);
+            
+            --primary: #00f2fe;
+            --primary-grad: linear-gradient(135deg, #00c6ff, #0072ff);
+            --accent-green: #10b981;
+            --accent-green-grad: linear-gradient(135deg, #34d399, #059669);
+            --accent-red: #ef4444;
+            --accent-red-grad: linear-gradient(135deg, #f87171, #dc2626);
+            --accent-orange: #f59e0b;
+            --accent-orange-grad: linear-gradient(135deg, #fbbf24, #d97706);
+            --accent-purple: #8b5cf6;
+            --accent-purple-grad: linear-gradient(135deg, #a78bfa, #7c3aed);
+            
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dark: #1f2937;
+            
+            --transition-speed: 0.3s;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 198, 255, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(124, 58, 237, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Top Navigation Bar */
+        aside {
+            height: 80px;
+            background: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-card);
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 2.5rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0;
+            padding-left: 0;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: 0.5px;
+        }
+
+        .logo-text span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 400;
+            display: block;
+            margin-top: -3px;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.85rem 1rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-item.active {
+            color: #fff;
+            background: rgba(0, 242, 254, 0.1);
+            border-color: rgba(0, 242, 254, 0.25);
+            box-shadow: 0 4px 20px -2px rgba(0, 242, 254, 0.15);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1rem 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Main Content */
+        main {
+            margin-left: 0;
+            margin-top: 80px;
+            flex: 1;
+            padding: 2.5rem;
+            max-width: 1600px;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1.5rem;
+        }
+
+        .header-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 2.25rem;
+            background: linear-gradient(to right, #ffffff, #9ca3af);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .badge-company {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+        }
+
+        /* Tabs Content container */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Grid layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Premium Cards */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-card);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        /* KPI Card specific styling */
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .kpi-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 30px;
+            margin-top: 0.5rem;
+        }
+
+        .trend-up {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        .trend-down {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-red);
+        }
+
+        .trend-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent-orange);
+        }
+
+        /* Highlight box */
+        .alert-box {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid var(--accent-red);
+            border-radius: 0 16px 16px 0;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .alert-box.warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-left-color: var(--accent-orange);
+        }
+
+        .alert-box.success {
+            background: rgba(16, 185, 129, 0.08);
+            border-left-color: var(--accent-green);
+        }
+
+        .alert-box.info {
+            background: rgba(0, 242, 254, 0.08);
+            border-left-color: var(--primary);
+        }
+
+        .alert-icon {
+            font-size: 1.25rem;
+            margin-top: 2px;
+        }
+
+        .alert-box.warning .alert-icon { color: var(--accent-orange); }
+        .alert-box.success .alert-icon { color: var(--accent-green); }
+        .alert-box.info .alert-icon { color: var(--primary); }
+        .alert-box .alert-icon { color: var(--accent-red); }
+
+        .alert-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: #fff;
+        }
+
+        .alert-content p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Tables styling */
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-main);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .num-cell {
+            text-align: right;
+            font-family: 'Outfit', sans-serif;
+            white-space: nowrap;
+        }
+
+        .pct-cell {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-align: right;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .bold-row td {
+            font-weight: 700;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .indent-row td:first-child {
+            padding-left: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* Board simulator interactive block */
+        .simulator-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        .sim-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .slider-header span:last-child {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin: 10px 0;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .sim-results {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .sim-metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sim-metric:last-child {
+            border-bottom: none;
+        }
+
+        .sim-metric-name {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .sim-metric-vals {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .val-original {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-size: 0.85rem;
+        }
+
+        .val-simulated {
+            color: #fff;
+            font-size: 1.15rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .val-simulated.better {
+            color: var(--accent-green);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .val-simulated.worse {
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .gauge-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .gauge-bar {
+            height: 100%;
+            background: var(--primary-grad);
+            width: 50%;
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        /* Advice cards / Lists */
+        .advice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .advice-item {
+            display: flex;
+            gap: 15px;
+            padding: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: transform 0.2s ease;
+        }
+
+        .advice-item:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .advice-icon {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-top: 3px;
+        }
+
+        .advice-text h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .advice-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Property Visualizer */
+        .property-map {
+            display: flex;
+            height: 180px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .prop-part {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 10px;
+            text-align: center;
+            transition: opacity 0.3s;
+        }
+
+        .prop-part:hover {
+            opacity: 0.9;
+        }
+
+        .prop-workshop {
+            background: linear-gradient(135deg, rgba(0, 198, 255, 0.2), rgba(0, 114, 255, 0.2));
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            width: 40%;
+        }
+
+        .prop-dentist {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(124, 58, 237, 0.2));
+            width: 30%;
+        }
+
+        .prop-other {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            width: 30%;
+        }
+
+        /* Toggle switch for tables */
+        .toggle-container {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: 30px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Custom styling for Saldobalanse tab */
+        .saldobalanse-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 1024px) {
+            .saldobalanse-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .table-scroll {
+            max-height: none;
+            overflow-y: visible;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .table-scroll table thead th {
+            position: sticky;
+            top: 80px; /* Rett under den faste toppmenyen */
+            background-color: #0b0f19; /* Solid farge lik sidens bakgrunn for å dekke over tall under scrolling */
+            z-index: 10;
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+        }
+        .row-eval {
+            position: relative;
+            background: rgba(0, 242, 254, 0.03) !important;
+            transition: all 0.2s ease;
+        }
+        .row-eval:hover {
+            background: rgba(0, 242, 254, 0.08) !important;
+            box-shadow: inset 3px 0 0 0 var(--primary);
+            cursor: pointer;
+        }
+        .row-eval.active-row {
+            background: rgba(0, 242, 254, 0.12) !important;
+            box-shadow: inset 4px 0 0 0 var(--primary);
+            font-weight: 600;
+        }
+        .row-eval td:first-child {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .badge-eval {
+            background: rgba(0, 242, 254, 0.15);
+            color: var(--primary);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .comment-panel {
+            position: sticky;
+            top: 100px; /* 80px toppmeny + 20px avstand */
+            height: fit-content;
+            transition: all 0.3s ease;
+        }
+        .comment-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .comment-header h4 {
+            font-size: 1.25rem;
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+        }
+        .comment-header .account-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        .comment-body h5 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin: 1.25rem 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .comment-body p {
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .comment-body ul {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-left: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .comment-body li {
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .logo-text {
+                display: none;
+            }
+        }
+        @media (max-width: 992px) {
+            aside {
+                padding: 0 1.5rem;
+            }
+            .nav-item span {
+                display: none;
+            }
+            .nav-item {
+                padding: 0.6rem;
+            }
+        }
+        @media (max-width: 768px) {
+            aside {
+                padding: 0 1rem;
+                height: 70px;
+            }
+            main {
+                margin-top: 70px;
+                padding: 1.5rem 1rem;
+            }
+            .nav-item i {
+                font-size: 1.25rem;
+            }
+            .simulator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside>
+        <div class="logo-container">
+            <i class="fa-solid fa-car-burst logo-icon"></i>
+            <div class="logo-text">
+                Bil & Dekkservice
+                <span>Selskapsanalyse</span>
+            </div>
+        </div>
+
+        <nav>
+            <div class="nav-item active" onclick="switchTab('dashboard', this)">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Dashbord & Trender</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('statements', this)">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+                <span>Resultat & Balanse</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('cashflow', this)">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span>Likviditet & Kontantstrøm</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('simulator', this)">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Likviditetskalkulator</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('saldobalanse', this)">
+                <i class="fa-solid fa-table-list"></i>
+                <span>Saldobalanse m/kommentarer</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('advice', this)">
+                <i class="fa-solid fa-scale-balanced"></i>
+                <span>Råd til Styret</span>
+            </div>
+        </nav>
+
+
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+        <header>
+            <div class="header-title">
+                <h1 id="page-title">Styredashbord & Finansielle Trender</h1>
+                <p id="page-subtitle">Finansiell status og 5-årshistorikk (2021 - 2025) for styret i Bil og Dekkservice AS</p>
+            </div>
+        </header>
+
+        <!-- TAB 1: DASHBOARD & TRENDS -->
+        <section id="dashboard" class="tab-content active">
+            <!-- Alert for critical items -->
+            <div class="alert-box info">
+                <i class="fa-solid fa-circle-info alert-icon"></i>
+                <div class="alert-content">
+                    <h4>Oppsummering av selskapsanalysen</h4>
+                    <p style="margin-bottom: 0.75rem;"><strong>Likviditetsutvikling:</strong> Likviditetsgrad 1 har falt til <strong>0,66</strong> (fra 0,9 i 2024 og 1,2 i 2022). Samtidig har leverandørgjelden økt med 94 % og kontantbeholdningen falt til 511 971 kr. Selskapet finansierer i realiteten den aggressive nedbetalingen av langsiktig gjeld ved å utsette betalinger til vareleverandører. Dette medfører operasjonell risiko.</p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Drift og resultat:</strong> Salgsinntektene for 2025 endte på 11,75 MNOK, en svak nedgang på 1,7 % fra 2024. Driftsresultatet (EBIT) falt kraftig med 27,8 % til 774 400 kr (fra 1 072 310 kr), i hovedsak drevet av økte Lønnskostnader og Annen driftskostnad. Årsresultatet endte på 496 636 kr (ned 28,6 %).</p>
+                    <p style="margin-bottom: 0;"><strong>Balanse og merverdier:</strong> Selskapet har en bokført egenkapital på 1,48 MNOK per 31.12.2025. Selskapets reelle soliditet er vesentlig sterkere enn de bokførte tallene viser: Selskapets næringsbygg er bokført til 4,03 MNOK, men har en skattemessig markedsverdi på 10,49 MNOK, noe som betyr en betydelig skjult reserve på ca. 6,5 MNOK. Styret bør vurdere å bruke denne merverdien som pantesikkerhet for et langsiktig rammelån for å betjene leverandørgjeld og dermed avhjelpe likviditetskrisen.</p>
+                </div>
+            </div>
+
+            <!-- Top KPIs row -->
+            <div class="grid-3">
+                <div class="card">
+                    <div class="kpi-label">Driftsinntekter 2025</div>
+                    <div class="kpi-value">11 750 452 kr</div>
+                    <div class="kpi-label" style="font-size:0.75rem;">Sammenlignet med 2024</div>
+                    <span class="kpi-trend trend-down"><i class="fa-solid fa-arrow-trend-down"></i> -1.7%</span>
+                </div>
+                <div class="card">
+                    <div class="kpi-label">Driftsresultat (EBIT)</div>
+                    <div class="kpi-value" style="color: #fff;">774 400 kr</div>
+                    <div class="kpi-label" style="font-size:0.75rem;">EBIT-margin: 6.6%</div>
+                    <span class="kpi-trend trend-down"><i class="fa-solid fa-arrow-trend-down"></i> -27.8%</span>
+                </div>
+                <div class="card">
+                    <div class="kpi-label">Likviditetsgrad 1</div>
+                    <div class="kpi-value" style="color: var(--accent-red);">0.66</div>
+                    <div class="kpi-label" style="font-size:0.75rem;">Anbefalt norm: > 1.5</div>
+                    <span class="kpi-trend trend-down"><i class="fa-solid fa-circle-exclamation"></i> Presset likviditet</span>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-simple"></i> Driftsinntekt og Driftsresultat (2021-2025)</h3>
+                    </div>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-line"></i> Likviditetsutvikling vs. Langsiktig Gjeld</h3>
+                    </div>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="liquidityGjeldChart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <h3 class="card-title" id="rent-title"><i class="fa-solid fa-percent"></i> Rentabilitetsutvikling - EKR (2021-2025)</h3>
+                        <div class="toggle-container" style="margin-bottom: 0; padding: 2px;">
+                            <button class="toggle-btn active" id="btn-ekr" onclick="toggleRentabilityDataset('ekr')" style="padding: 4px 12px; font-size: 0.75rem;">EKR</button>
+                            <button class="toggle-btn" id="btn-tkr" onclick="toggleRentabilityDataset('tkr')" style="padding: 4px 12px; font-size: 0.75rem;">TKR</button>
+                        </div>
+                    </div>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="rentabilityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial metrics and comparison table with industry -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fa-solid fa-scale-balanced"></i> Finansielle Nøkkeltall vs. Bransjesnitt</h3>
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nøkkeltall</th>
+                                <th class="num-cell">2022</th>
+                                <th class="num-cell">2023</th>
+                                <th class="num-cell">2024</th>
+                                <th class="num-cell">2025</th>
+                                <th class="num-cell" style="color: var(--primary);">Bransjesnitt (2024)</th>
+                                <th>Kommentar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Resultatgrad</strong><br><small style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">(Resultat før skatt / Driftsinntekter) &times; 100</small></td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">6.9 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">8.0 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">7.5 %</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">5.4 %</td>
+                                <td class="num-cell" style="color: var(--primary); font-weight: 600;">6.4 %</td>
+                                <td><span style="color: var(--accent-orange);"><i class="fa-solid fa-triangle-exclamation"></i> Svekket.</span> Faller under bransjesnittet i 2025 grunnet økte driftskostnader.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Egenkapitalrentabilitet</strong><br><small style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">(Resultat før skatt / Gjennomsnittlig egenkapital) &times; 100</small></td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">109.6 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">123.1 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">102.6 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">51.3 %</td>
+                                <td class="num-cell" style="color: var(--primary); font-weight: 600;">32.9 %</td>
+                                <td><span style="color: var(--accent-green);"><i class="fa-solid fa-circle-check"></i> Sterk.</span> Fortsatt godt over bransjesnittet, men normalisert pga. høyere egenkapital.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Totalkapitalrentabilitet</strong><br><small style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">((Driftsresultat + Finansinntekter) / Gjennomsnittlig totalkapital) &times; 100</small></td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">13.2 %</td>
+                                <td class="num-cell" style="color: var(--accent-green); font-weight: 600;">15.6 %</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">14.5 %</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">10.8 %</td>
+                                <td class="num-cell" style="color: var(--primary); font-weight: 600;">14.9 %</td>
+                                <td><span style="color: var(--accent-orange);"><i class="fa-solid fa-triangle-exclamation"></i> Fallende.</span> Ned til 10.8 % i 2025 grunnet lavere EBIT, men historisk på nivå med bransjen.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gjeldsgrad</strong><br><small style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">(Sum gjeld / Egenkapital)</small></td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">10.2</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">8.6</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">6.8</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">4.0</td>
+                                <td class="num-cell" style="color: var(--primary); font-weight: 600;">1.5</td>
+                                <td><span style="color: var(--accent-orange);"><i class="fa-solid fa-triangle-exclamation"></i> Høy risiko.</span> Bedret fra 10.2, men fortsatt betydelig over bransjesnittet.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Likviditetsgrad 1</strong><br><small style="color: var(--text-muted); font-weight: normal; font-size: 0.75rem;">(Omløpsmidler / Kortsiktig gjeld)</small></td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">1.2</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">1.0</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">0.9</td>
+                                <td class="num-cell" style="color: var(--accent-red); font-weight: 600;">0.66</td>
+                                <td class="num-cell" style="color: var(--primary); font-weight: 600;">1.7</td>
+                                <td><span style="color: var(--accent-red);"><i class="fa-solid fa-circle-xmark"></i> Kritisk.</span> Betydelig under anbefalt nivå (1.5-2.0). Krever tiltak.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: STATEMENTS (INCOME & BALANCE) -->
+        <section id="statements" class="tab-content">
+            <div class="toggle-container">
+                <button class="toggle-btn active" id="btn-raw" onclick="toggleStatementMode('raw')">Nominelle verdier (NOK)</button>
+                <button class="toggle-btn" id="btn-pct" onclick="toggleStatementMode('pct')">Vertikal analyse (%)</button>
+            </div>
+
+            <div class="grid-2">
+                <!-- Resultatregnskap -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-receipt"></i> Resultatregnskap 2024 - 2025</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="income-table">
+                            <thead>
+                                <tr>
+                                    <th>Regnskapspost</th>
+                                    <th class="num-cell">2024</th>
+                                    <th class="num-cell">2025</th>
+                                    <th class="num-cell">Avvik</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bold-row">
+                                    <td>Salgsinntekter</td>
+                                    <td class="num-cell" data-val="11956400">11 956 400</td>
+                                    <td class="num-cell" data-val="11750452">11 750 452</td>
+                                    <td class="num-cell text-down">-1.7%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Varekostnad</td>
+                                    <td class="num-cell" data-val="5509458">5 509 458</td>
+                                    <td class="num-cell" data-val="5186137">5 186 137</td>
+                                    <td class="num-cell text-up">-5.9%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Lønnskostnad</td>
+                                    <td class="num-cell" data-val="4001932">4 001 932</td>
+                                    <td class="num-cell" data-val="4174835">4 174 835</td>
+                                    <td class="num-cell text-down">+4.3%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Avskrivninger</td>
+                                    <td class="num-cell" data-val="355000">355 000</td>
+                                    <td class="num-cell" data-val="338300">338 300</td>
+                                    <td class="num-cell">-4.7%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Annen driftskostnad</td>
+                                    <td class="num-cell" data-val="1017700">1 017 700</td>
+                                    <td class="num-cell" data-val="1276780">1 276 780</td>
+                                    <td class="num-cell text-down">+25.5%</td>
+                                </tr>
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.03);">
+                                    <td>Driftsresultat (EBIT)</td>
+                                    <td class="num-cell" data-val="1072310">1 072 310</td>
+                                    <td class="num-cell" data-val="774400">774 400</td>
+                                    <td class="num-cell text-down">-27.8%</td>
+                                </tr>
+                                <tr>
+                                    <td>Finansposter (netto)</td>
+                                    <td class="num-cell" data-val="-174500">-174 500</td>
+                                    <td class="num-cell" data-val="-143000">-143 000</td>
+                                    <td class="num-cell">-18.1%</td>
+                                </tr>
+                                <tr class="bold-row">
+                                    <td>Resultat før skatt</td>
+                                    <td class="num-cell" data-val="897810">897 810</td>
+                                    <td class="num-cell" data-val="631400">631 400</td>
+                                    <td class="num-cell text-down">-29.7%</td>
+                                </tr>
+                                <tr>
+                                    <td>Skattekostnad</td>
+                                    <td class="num-cell" data-val="201918">201 918</td>
+                                    <td class="num-cell" data-val="134764">134 764</td>
+                                    <td class="num-cell">-33.3%</td>
+                                </tr>
+                                <tr class="bold-row" style="background: rgba(0,242,254,0.05);">
+                                    <td>Årsresultat</td>
+                                    <td class="num-cell" data-val="695892">695 892</td>
+                                    <td class="num-cell" data-val="496636">496 636</td>
+                                    <td class="num-cell text-down">-28.6%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Balanse -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-scale-unbalanced-flip"></i> Balanseregnskap per 31.12</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="balance-table">
+                            <thead>
+                                <tr>
+                                    <th>Balansepost</th>
+                                    <th class="num-cell">2024</th>
+                                    <th class="num-cell">2025</th>
+                                    <th class="num-cell">Avvik</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bold-row">
+                                    <td>Anleggsmidler</td>
+                                    <td class="num-cell" data-val="4977000">4 977 000</td>
+                                    <td class="num-cell" data-val="5498175">5 498 175</td>
+                                    <td class="num-cell text-up">+10.5%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Bygninger og eiendom</td>
+                                    <td class="num-cell" data-val="3250000">3 250 000</td>
+                                    <td class="num-cell" data-val="4025475">4 025 475</td>
+                                    <td class="num-cell">+23.9%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Driftsløsøre, inventar</td>
+                                    <td class="num-cell" data-val="1727000">1 727 000</td>
+                                    <td class="num-cell" data-val="1472700">1 472 700</td>
+                                    <td class="num-cell">-14.7%</td>
+                                </tr>
+                                <tr class="bold-row">
+                                    <td>Omløpsmidler</td>
+                                    <td class="num-cell" data-val="2640000">2 640 000</td>
+                                    <td class="num-cell" data-val="1956646">1 956 646</td>
+                                    <td class="num-cell text-down">-25.9%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Varelager</td>
+                                    <td class="num-cell" data-val="500000">500 000</td>
+                                    <td class="num-cell" data-val="585000">585 000</td>
+                                    <td class="num-cell">+17.0%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Kundefordringer</td>
+                                    <td class="num-cell" data-val="983500">983 500</td>
+                                    <td class="num-cell" data-val="445672">445 672</td>
+                                    <td class="num-cell text-up">-54.7%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Markedsbaserte aksjer</td>
+                                    <td class="num-cell" data-val="380000">380 000</td>
+                                    <td class="num-cell" data-val="400000">400 000</td>
+                                    <td class="num-cell">+5.3%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Bankinnskudd, kontanter</td>
+                                    <td class="num-cell" data-val="776500">776 500</td>
+                                    <td class="num-cell" data-val="511971">511 971</td>
+                                    <td class="num-cell text-down">-34.1%</td>
+                                </tr>
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.03);">
+                                    <td>SUM EIENDELER</td>
+                                    <td class="num-cell" data-val="7617000">7 617 000</td>
+                                    <td class="num-cell" data-val="7454821">7 454 821</td>
+                                    <td class="num-cell">-2.1%</td>
+                                </tr>
+                                <tr class="bold-row" style="color: var(--accent-green);">
+                                    <td>Egenkapital</td>
+                                    <td class="num-cell" data-val="982357">982 357</td>
+                                    <td class="num-cell" data-val="1478993">1 478 993</td>
+                                    <td class="num-cell text-up">+50.5%</td>
+                                </tr>
+                                <tr class="bold-row">
+                                    <td>Langsiktig gjeld</td>
+                                    <td class="num-cell" data-val="3600000">3 600 000</td>
+                                    <td class="num-cell" data-val="3000000">3 000 000</td>
+                                    <td class="num-cell text-up">-16.7%</td>
+                                </tr>
+                                <tr class="bold-row">
+                                    <td>Kortsiktig gjeld</td>
+                                    <td class="num-cell" data-val="3021449">3 021 449</td>
+                                    <td class="num-cell" data-val="2950999">2 950 999</td>
+                                    <td class="num-cell">-2.3%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Leverandørgjeld</td>
+                                    <td class="num-cell" data-val="833000">833 000</td>
+                                    <td class="num-cell" data-val="1615867">1 615 867</td>
+                                    <td class="num-cell text-down">+94.0%</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Annen kortsiktig gjeld</td>
+                                    <td class="num-cell" data-val="2188449">2 188 449</td>
+                                    <td class="num-cell" data-val="1335132">1 335 132</td>
+                                    <td class="num-cell">-39.0%</td>
+                                </tr>
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.03);">
+                                    <td>SUM EGENKAPITAL OG GJELD</td>
+                                    <td class="num-cell" data-val="7617000">7 617 000</td>
+                                    <td class="num-cell" data-val="7454821">7 454 821</td>
+                                    <td class="num-cell">-2.1%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: CASHFLOW -->
+        <section id="cashflow" class="tab-content">
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-pie"></i> Hvor ble kontantene av i 2025?</h3>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem; line-height: 1.5;">
+                        Kontantstrømoppstillingen viser en lønnsom underliggende drift som genererer <strong>1,58 MNOK</strong> i kontanter fra operasjonell virksomhet. Men store utbetalinger til investeringer, utbytte og gjeldsnedbetaling fører til en netto reduksjon i likviditeten på -264 529 kr.
+                    </p>
+                    <div style="height: 320px; position: relative;">
+                        <canvas id="cashflowChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Spesifikasjon av kontantstrømmen 2025</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Aktivitetsområde</th>
+                                    <th class="num-cell">Beløp (NOK)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- OPERASJONELLE AKTIVITETER -->
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.02);">
+                                    <td colspan="2">KONTANTSTRØMMER FRA OPERASJONELLE AKTIVITETER</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Resultat før skattekostnad</td>
+                                    <td class="num-cell">631 400</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Periodens betalte skatt</td>
+                                    <td class="num-cell">-239 389</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Tap/gevinst ved salg av anleggsmidler</td>
+                                    <td class="num-cell">-132 600</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Ordinære avskrivninger</td>
+                                    <td class="num-cell">338 300</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Endring i varelager</td>
+                                    <td class="num-cell">-85 000</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Endring i kundefordringer</td>
+                                    <td class="num-cell" style="color: var(--accent-green);">537 828</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Endring i leverandørgjeld</td>
+                                    <td class="num-cell" style="color: var(--accent-green);">782 867</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Endring i andre tidsavgrensningsposter</td>
+                                    <td class="num-cell">-251 060</td>
+                                </tr>
+                                <tr class="bold-row" style="border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                    <td style="padding-left: 1rem; color: var(--primary);">Netto kontantstrøm fra operasjonelle aktiviteter</td>
+                                    <td class="num-cell" style="color: var(--accent-green); font-weight: bold;">1 582 346</td>
+                                </tr>
+
+                                <!-- INVESTERINGSAKTIVITETER -->
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.02);">
+                                    <td colspan="2">KONTANTSTRØMMER FRA INVESTERINGSAKTIVITETER</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Verdiendring finansielle instrumenter</td>
+                                    <td class="num-cell">-20 000</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Innbetalinger ved salg av varige driftsmidler</td>
+                                    <td class="num-cell" style="color: var(--accent-green);">550 000</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Utbetalinger ved kjøp av varige driftsmidler</td>
+                                    <td class="num-cell">-1 276 875</td>
+                                </tr>
+                                <tr class="bold-row" style="border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                    <td style="padding-left: 1rem; color: var(--primary);">Netto kontantstrøm fra investeringsaktiviteter</td>
+                                    <td class="num-cell" style="color: var(--accent-red); font-weight: bold;">-746 875</td>
+                                </tr>
+
+                                <!-- FINANSIERINGSAKTIVITETER -->
+                                <tr class="bold-row" style="background: rgba(255,255,255,0.02);">
+                                    <td colspan="2">KONTANTSTRØMMER FRA FINANSIERINGSAKTIVITETER</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Utbetalinger ved nedbetaling av langsiktig gjeld</td>
+                                    <td class="num-cell">-600 000</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Utbetalinger av utbytte</td>
+                                    <td class="num-cell">-500 000</td>
+                                </tr>
+                                <tr class="bold-row" style="border-bottom: 2px solid rgba(255,255,255,0.15);">
+                                    <td style="padding-left: 1rem; color: var(--primary);">Netto kontantstrøm fra finansieringsaktiviteter</td>
+                                    <td class="num-cell" style="color: var(--accent-red); font-weight: bold;">-1 100 000</td>
+                                </tr>
+
+                                <!-- REKONSERING -->
+                                <tr class="bold-row" style="background: rgba(239, 68, 68, 0.05); border-top: 2px solid rgba(255,255,255,0.15);">
+                                    <td>Netto endring i kontanter og kontantekvivalenter</td>
+                                    <td class="num-cell" style="color: var(--accent-red); font-weight: bold;">-264 529</td>
+                                </tr>
+                                <tr class="indent-row">
+                                    <td>Beh. av kont. og kontantekvivalenter ved per. begynnelse 01.01.25</td>
+                                    <td class="num-cell">776 500</td>
+                                </tr>
+                                <tr class="indent-row" style="font-weight: bold; border-bottom: 2px double rgba(255,255,255,0.3);">
+                                    <td>Beh. av kont. og kontantekvivalenter ved per. slutt 31.12.25</td>
+                                    <td class="num-cell">511 971</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: INTERACTIVE BOARD SIMULATOR -->
+        <section id="simulator" class="tab-content">
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fa-solid fa-calculator"></i> Styremedlemmenes Likviditetskalkulator</h3>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.5;">
+                    Som styremedlemmer har dere det overordnede ansvaret for selskapets likviditet. Her kan dere simulere effekten av to ulike grep for å bedre likviditeten:
+                    <br><strong>Grep A:</strong> Refinansiere deler av den kortsiktige gjelden (leverandørgjeld/annen kortsiktig gjeld) til et langsiktig banklån.
+                    <br><strong>Grep B:</strong> Redusere kundekreditt og omløpstid på varelageret for å frigjøre låste kontanter.
+                </p>
+
+                <div class="simulator-container">
+                    <div class="sim-controls">
+                        <!-- Control 1 -->
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <span>Refinansier kortsiktig gjeld til langsiktig lån:</span>
+                                <span id="val-refi">0 kr</span>
+                            </div>
+                            <input type="range" id="input-refi" min="0" max="2000000" step="50000" value="0" oninput="updateSimulation()">
+                            <p style="font-size:0.75rem; color: var(--text-muted);">Flytter kortsiktig gjeld over til langsiktig lån for å redusere betalingspresset det kommende året.</p>
+                        </div>
+                        
+                        <!-- Control 2 -->
+                        <div class="slider-group" style="margin-top: 1rem;">
+                            <div class="slider-header">
+                                <span>Frigjør kapital fra kundefordringer (reduksjon i dager):</span>
+                                <span id="val-dso">0 dager</span>
+                            </div>
+                            <input type="range" id="input-dso" min="0" max="20" step="1" value="0" oninput="updateSimulation()">
+                            <p style="font-size:0.75rem; color: var(--text-muted);">Effektiviserer fakturering og innkreving. Reduserer kundenes betalingstid. Hver dag frigjør ca. 32 000 kr i kontanter.</p>
+                        </div>
+                    </div>
+
+                    <div class="sim-results">
+                        <div>
+                            <h4 style="font-size: 1.05rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; color: var(--primary);">Simulert Balanse & Likviditet:</h4>
+                            
+                            <div class="sim-metric">
+                                <span class="sim-metric-name">Kortsiktig Gjeld</span>
+                                <div class="sim-metric-vals">
+                                    <span class="val-original">2 950 999 kr</span>
+                                    <span class="val-simulated" id="sim-kg">2 950 999 kr</span>
+                                </div>
+                            </div>
+
+                            <div class="sim-metric">
+                                <span class="sim-metric-name">Bankinnskudd (Likviditet)</span>
+                                <div class="sim-metric-vals">
+                                    <span class="val-original">511 971 kr</span>
+                                    <span class="val-simulated" id="sim-bank">511 971 kr</span>
+                                </div>
+                            </div>
+
+                            <div class="sim-metric" style="border-bottom:none;">
+                                <span class="sim-metric-name">Likviditetsgrad 1 (Mål: > 1.2)</span>
+                                <div class="sim-metric-vals">
+                                    <span class="val-original">0.66</span>
+                                    <span class="val-simulated" id="sim-lg">0.66</span>
+                                </div>
+                            </div>
+                            
+                            <div class="gauge-bar-container">
+                                <div class="gauge-bar" id="gauge-lg"></div>
+                            </div>
+                        </div>
+
+                        <div id="sim-verdict" class="alert-box warning" style="margin-bottom:0; margin-top: 1rem; padding: 0.75rem 1rem;">
+                            <i class="fa-solid fa-circle-exclamation alert-icon"></i>
+                            <div class="alert-content">
+                                <h4 id="verdict-title">Dagens situasjon (kritisk)</h4>
+                                <p id="verdict-desc">Likviditeten er svært presset. Foretaket har problemer med å betale løpende forpliktelser uten å tøye leverandørkreditten.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: SALDOBALANSE MED KOMMENTARER -->
+        <section id="saldobalanse" class="tab-content">
+            <!-- Alert for valuation importance -->
+            <div class="alert-box success">
+                <i class="fa-solid fa-scale-balanced alert-icon"></i>
+                <div class="alert-content">
+                    <h4>Styrets vurdering av regnskapsestimater (Regnskapsloven &sect; 5-2 – Omløpsmidler – Omløpsmidler og &sect; 5-3 – Anleggsmidler)</h4>
+                    <p>Flere av postene i saldobalansen er basert på estimater og skjønnsmessige vurderinger fra ledelsen. Styret har et selvstendig ansvar for å vurdere om avsetningene er tilstrekkelige og i tråd med forsiktighetsprinsippet. Klikk på de markerte kontoene (<span style="color: var(--primary); font-weight: 600;">Vurdering</span>) for å se faglige råd og kommentarer.</p>
+                </div>
+            </div>
+
+            <!-- Top Cards for Key Assessments -->
+            <div class="grid-3">
+                <div class="card" onclick="document.querySelector('[onclick*=\'2120\']').click(); document.getElementById('saldobalanse-comment-card').scrollIntoView({behavior: 'smooth'});" style="cursor:pointer;">
+                    <div class="kpi-label">Utsatt skatt (Konto 2120)</div>
+                    <div class="kpi-value" style="color: #fff;">24 829 kr</div>
+                    <div class="kpi-label" style="font-size:0.75rem; text-transform:none; color:var(--text-muted);">Skattemessig fremførbart underskudd: <strong>0 kr</strong></div>
+                    <span class="kpi-trend trend-warning"><i class="fa-solid fa-triangle-exclamation"></i> Vurdering av fremtidig nytteverdi</span>
+                </div>
+                <div class="card" onclick="document.querySelector('[onclick*=\'1468\']').click(); document.getElementById('saldobalanse-comment-card').scrollIntoView({behavior: 'smooth'});" style="cursor:pointer;">
+                    <div class="kpi-label">Varelager ukurans (Konto 1468)</div>
+                    <div class="kpi-value" style="color: var(--accent-orange);">-65 000 kr</div>
+                    <div class="kpi-label" style="font-size:0.75rem; text-transform:none; color:var(--text-muted);">Ukuransandel slitedeler: <strong>16.3 %</strong></div>
+                    <span class="kpi-trend trend-warning"><i class="fa-solid fa-circle-exclamation"></i> Risiko for foreldet lager</span>
+                </div>
+                <div class="card" onclick="document.querySelector('[onclick*=\'1580\']').click(); document.getElementById('saldobalanse-comment-card').scrollIntoView({behavior: 'smooth'});" style="cursor:pointer;">
+                    <div class="kpi-label">Tapsavsetning fordringer (Konto 1580)</div>
+                    <div class="kpi-value" style="color: var(--accent-red);">-130 000 kr</div>
+                    <div class="kpi-label" style="font-size:0.75rem; text-transform:none; color:var(--text-muted);">Andel av utestående kundekrav: <strong>22.6 %</strong></div>
+                    <span class="kpi-trend trend-down"><i class="fa-solid fa-arrow-trend-down"></i> Svært høy kredittrisikoprofil</span>
+                </div>
+            </div>
+
+            <div class="saldobalanse-grid">
+                <!-- Left: Table card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Saldobalanse for 2025</h3>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Klikk på kontoer markert med <span class="badge-eval">Vurdering</span></div>
+                    </div>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Konto</th>
+                                    <th>Beskrivelse</th>
+                                    <th class="num-cell">Foreløpig 2025</th>
+                                    <th class="num-cell">Oppgjørsposter</th>
+                                    <th class="num-cell">Endelig 2025</th>
+                                    <th class="num-cell">Saldo 2024</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="row-eval" onclick="selectAccount(this, '1100', 'Bygninger', '3 636 875', '-111 400', '3 525 475', '2 750 000')">
+                                    <td><strong>1100</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Bygninger</td>
+                                    <td class="num-cell">3 636 875</td>
+                                    <td class="num-cell">-111 400</td>
+                                    <td class="num-cell">3 525 475</td>
+                                    <td class="num-cell">2 750 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1150</strong></td>
+                                    <td>Tomter</td>
+                                    <td class="num-cell">500 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">500 000</td>
+                                    <td class="num-cell">500 000</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '1230', 'Biler', '460 000', '-10 000', '450 000', '860 000')">
+                                    <td><strong>1230</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Biler</td>
+                                    <td class="num-cell">460 000</td>
+                                    <td class="num-cell">-10 000</td>
+                                    <td class="num-cell">450 000</td>
+                                    <td class="num-cell">860 000</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '1250', 'Inventar', '95 000', '-15 000', '80 000', '95 000')">
+                                    <td><strong>1250</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Inventar</td>
+                                    <td class="num-cell">95 000</td>
+                                    <td class="num-cell">-15 000</td>
+                                    <td class="num-cell">80 000</td>
+                                    <td class="num-cell">95 000</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '1270', 'Verktøy', '1 012 000', '-69 300', '942 700', '772 000')">
+                                    <td><strong>1270</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Verktøy</td>
+                                    <td class="num-cell">1 012 000</td>
+                                    <td class="num-cell">-69 300</td>
+                                    <td class="num-cell">942 700</td>
+                                    <td class="num-cell">772 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1460</strong></td>
+                                    <td>Slitedeler</td>
+                                    <td class="num-cell">350 000</td>
+                                    <td class="num-cell">50 000</td>
+                                    <td class="num-cell">400 000</td>
+                                    <td class="num-cell">350 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1461</strong></td>
+                                    <td>Dekk</td>
+                                    <td class="num-cell">210 000</td>
+                                    <td class="num-cell">40 000</td>
+                                    <td class="num-cell">250 000</td>
+                                    <td class="num-cell">210 000</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '1468', 'Ukurans slitedeler', '-60 000', '-5 000', '-65 000', '-60 000')">
+                                    <td><strong>1468</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Ukurans slitedeler</td>
+                                    <td class="num-cell">-60 000</td>
+                                    <td class="num-cell">-5 000</td>
+                                    <td class="num-cell">-65 000</td>
+                                    <td class="num-cell">-60 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1500</strong></td>
+                                    <td>Kundefordringer</td>
+                                    <td class="num-cell">575 672</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">575 672</td>
+                                    <td class="num-cell">1 104 500</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '1580', 'Avsetning tap kundefordringer', '-121 000', '-9 000', '-130 000', '-121 000')">
+                                    <td><strong>1580</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Avsetning tap kundefordringer</td>
+                                    <td class="num-cell">-121 000</td>
+                                    <td class="num-cell">-9 000</td>
+                                    <td class="num-cell">-130 000</td>
+                                    <td class="num-cell">-121 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1810</strong></td>
+                                    <td>Markedsbaserte aksjer</td>
+                                    <td class="num-cell">380 000</td>
+                                    <td class="num-cell">20 000</td>
+                                    <td class="num-cell">400 000</td>
+                                    <td class="num-cell">380 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1920</strong></td>
+                                    <td>Bankinnskudd</td>
+                                    <td class="num-cell">396 771</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">396 771</td>
+                                    <td class="num-cell">664 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>1950</strong></td>
+                                    <td>Bankinnskudd skattetrekk</td>
+                                    <td class="num-cell">115 200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">115 200</td>
+                                    <td class="num-cell">112 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2000</strong></td>
+                                    <td>Aksjekapital</td>
+                                    <td class="num-cell">-500 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-500 000</td>
+                                    <td class="num-cell">-500 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2050</strong></td>
+                                    <td>Annen egenkapital</td>
+                                    <td class="num-cell">-482 357</td>
+                                    <td class="num-cell">-496 636</td>
+                                    <td class="num-cell">-978 993</td>
+                                    <td class="num-cell">-482 357</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '2120', 'Utsatt skatt', '-13 194', '-11 635', '-24 829', '-13 194')">
+                                    <td><strong>2120</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Utsatt skatt</td>
+                                    <td class="num-cell">-13 194</td>
+                                    <td class="num-cell">-11 635</td>
+                                    <td class="num-cell">-24 829</td>
+                                    <td class="num-cell">-13 194</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2220</strong></td>
+                                    <td>Gjeld kredittinstitusjoner</td>
+                                    <td class="num-cell">-3 000 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-3 000 000</td>
+                                    <td class="num-cell">-3 600 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2400</strong></td>
+                                    <td>Leverandørgjeld</td>
+                                    <td class="num-cell">-1 615 867</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-1 615 867</td>
+                                    <td class="num-cell">-833 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2500</strong></td>
+                                    <td>Betalbar skatt</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-123 129</td>
+                                    <td class="num-cell">-123 129</td>
+                                    <td class="num-cell">-239 389</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2600</strong></td>
+                                    <td>Forskuddstrekk</td>
+                                    <td class="num-cell">-115 200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-115 200</td>
+                                    <td class="num-cell">-112 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2740</strong></td>
+                                    <td>Oppgjørskonto merverdiavgift</td>
+                                    <td class="num-cell">14 003</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">14 003</td>
+                                    <td class="num-cell">-258 300</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2770</strong></td>
+                                    <td>Skyldig arbeidsgiveravgift</td>
+                                    <td class="num-cell">-75 505</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-75 505</td>
+                                    <td class="num-cell">-70 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2785</strong></td>
+                                    <td>Påløpt arbeidsgiveravgift feriepenger</td>
+                                    <td class="num-cell">-53 298</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-53 298</td>
+                                    <td class="num-cell">-50 760</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2800</strong></td>
+                                    <td>Avsatt utbytte</td>
+                                    <td class="num-cell">-500 000</td>
+                                    <td class="num-cell">500 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-1 000 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2910</strong></td>
+                                    <td>Gjeld til ansatte og eiere</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-500 000</td>
+                                    <td class="num-cell">-500 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2940</strong></td>
+                                    <td>Feriepenger</td>
+                                    <td class="num-cell">-378 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-378 000</td>
+                                    <td class="num-cell">-360 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2950</strong></td>
+                                    <td>Påløpte renter</td>
+                                    <td class="num-cell">-30 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-30 000</td>
+                                    <td class="num-cell">-35 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>2960</strong></td>
+                                    <td>Påløpte kostnader</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-12 000</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '2980', 'Avsetning og forpliktelser', '-50 000', '-10 000', '-60 000', '-50 000')">
+                                    <td><strong>2980</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Avsetning og forpliktelser</td>
+                                    <td class="num-cell">-50 000</td>
+                                    <td class="num-cell">-10 000</td>
+                                    <td class="num-cell">-60 000</td>
+                                    <td class="num-cell">-50 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>3000</strong></td>
+                                    <td>Salgsinntekt deler</td>
+                                    <td class="num-cell">-5 963 397</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-5 963 397</td>
+                                    <td class="num-cell">-6 146 600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>3010</strong></td>
+                                    <td>Salgsinntekt arbeid</td>
+                                    <td class="num-cell">-2 386 455</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-2 386 455</td>
+                                    <td class="num-cell">-2 450 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>3020</strong></td>
+                                    <td>Salgsinntekt dekk</td>
+                                    <td class="num-cell">-2 889 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-2 889 000</td>
+                                    <td class="num-cell">-2 999 800</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>3600</strong></td>
+                                    <td>Leieinntekt fast eiendom</td>
+                                    <td class="num-cell">-360 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-360 000</td>
+                                    <td class="num-cell">-360 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>3800</strong></td>
+                                    <td>Gevinst avgang driftsmidler</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-151 600</td>
+                                    <td class="num-cell">-151 600</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>4000</strong></td>
+                                    <td>Innkjøp av råvarer og halvfabrikata</td>
+                                    <td class="num-cell">12 499</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">12 499</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>4300</strong></td>
+                                    <td>Innkjøp av deler</td>
+                                    <td class="num-cell">3 311 969</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">3 311 969</td>
+                                    <td class="num-cell">3 571 988</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>4310</strong></td>
+                                    <td>Innkjøp av dekk</td>
+                                    <td class="num-cell">1 946 669</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">1 946 669</td>
+                                    <td class="num-cell">1 918 270</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>4390</strong></td>
+                                    <td>Beholdningsendring deler</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-45 000</td>
+                                    <td class="num-cell">-45 000</td>
+                                    <td class="num-cell">-12 400</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>4391</strong></td>
+                                    <td>Beholdningsendring dekk</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-40 000</td>
+                                    <td class="num-cell">-40 000</td>
+                                    <td class="num-cell">31 600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5000</strong></td>
+                                    <td>Lønn til ansatte</td>
+                                    <td class="num-cell">3 150 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">3 150 000</td>
+                                    <td class="num-cell">3 000 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5020</strong></td>
+                                    <td>Feriepenger</td>
+                                    <td class="num-cell">346 500</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">346 500</td>
+                                    <td class="num-cell">360 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5092</strong></td>
+                                    <td>Feriepenger</td>
+                                    <td class="num-cell">31 500</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">31 500</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5400</strong></td>
+                                    <td>Arbeidsgiveravgift</td>
+                                    <td class="num-cell">458 037</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">458 037</td>
+                                    <td class="num-cell">473 760</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5405</strong></td>
+                                    <td>Arb.giv.avg av pål. feriepenger</td>
+                                    <td class="num-cell">4 441</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">4 441</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5410</strong></td>
+                                    <td>Arbeidsgiveravgift av opptjente feriepen</td>
+                                    <td class="num-cell">48 857</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">48 857</td>
+                                    <td class="num-cell">50 760</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5420</strong></td>
+                                    <td>Innberetningspliktig pensjonskostnad</td>
+                                    <td class="num-cell">63 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">63 000</td>
+                                    <td class="num-cell">60 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5900</strong></td>
+                                    <td>Gaver til ansatte</td>
+                                    <td class="num-cell">10 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">10 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5910</strong></td>
+                                    <td>Kantinekostnad</td>
+                                    <td class="num-cell">31 500</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">31 500</td>
+                                    <td class="num-cell">24 612</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>5920</strong></td>
+                                    <td>Yrkesskadeforsikring</td>
+                                    <td class="num-cell">31 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">31 000</td>
+                                    <td class="num-cell">32 800</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6000</strong></td>
+                                    <td>Avskrivning bygg</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">111 400</td>
+                                    <td class="num-cell">111 400</td>
+                                    <td class="num-cell">110 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6010</strong></td>
+                                    <td>Avskrivning biler</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">161 600</td>
+                                    <td class="num-cell">161 600</td>
+                                    <td class="num-cell">170 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6020</strong></td>
+                                    <td>Avskrivning inventar</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">15 000</td>
+                                    <td class="num-cell">15 000</td>
+                                    <td class="num-cell">15 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6030</strong></td>
+                                    <td>Avskrivning verktøy</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">50 300</td>
+                                    <td class="num-cell">50 300</td>
+                                    <td class="num-cell">60 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6320</strong></td>
+                                    <td>Kommunale avgifter bygg</td>
+                                    <td class="num-cell">61 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">61 000</td>
+                                    <td class="num-cell">50 200</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6340</strong></td>
+                                    <td>Strøm</td>
+                                    <td class="num-cell">264 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">264 000</td>
+                                    <td class="num-cell">295 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6360</strong></td>
+                                    <td>Renhold</td>
+                                    <td class="num-cell">26 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">26 000</td>
+                                    <td class="num-cell">24 600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6390</strong></td>
+                                    <td>Annen kostnad lokaler</td>
+                                    <td class="num-cell">18 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">18 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6420</strong></td>
+                                    <td>Leie datasystemer</td>
+                                    <td class="num-cell">40 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">40 000</td>
+                                    <td class="num-cell">44 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6510</strong></td>
+                                    <td>Verktøy</td>
+                                    <td class="num-cell">58 200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">58 200</td>
+                                    <td class="num-cell">84 700</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6540</strong></td>
+                                    <td>Inventar</td>
+                                    <td class="num-cell">5 300</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">5 300</td>
+                                    <td class="num-cell">10 900</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6550</strong></td>
+                                    <td>Driftsmateriale</td>
+                                    <td class="num-cell">8 928</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">8 928</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6560</strong></td>
+                                    <td>Rekvisita</td>
+                                    <td class="num-cell">15 897</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">15 897</td>
+                                    <td class="num-cell">8 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6570</strong></td>
+                                    <td>Arbeidsklær</td>
+                                    <td class="num-cell">24 600</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">24 600</td>
+                                    <td class="num-cell">13 800</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6700</strong></td>
+                                    <td>Honorar revisjon</td>
+                                    <td class="num-cell">68 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">68 000</td>
+                                    <td class="num-cell">32 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6705</strong></td>
+                                    <td>Honorar regnskap</td>
+                                    <td class="num-cell">138 500</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">138 500</td>
+                                    <td class="num-cell">104 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6800</strong></td>
+                                    <td>Kontorrekvisita</td>
+                                    <td class="num-cell">5 200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">5 200</td>
+                                    <td class="num-cell">3 400</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6860</strong></td>
+                                    <td>Møte, kurs, oppdatering o.l.</td>
+                                    <td class="num-cell">21 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">21 000</td>
+                                    <td class="num-cell">14 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6900</strong></td>
+                                    <td>Mobiltelefon</td>
+                                    <td class="num-cell">12 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">12 000</td>
+                                    <td class="num-cell">12 600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6910</strong></td>
+                                    <td>Bredbånd</td>
+                                    <td class="num-cell">17 400</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">17 400</td>
+                                    <td class="num-cell">11 300</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>6940</strong></td>
+                                    <td>Porto</td>
+                                    <td class="num-cell">200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">200</td>
+                                    <td class="num-cell">600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7000</strong></td>
+                                    <td>Drivstoff kjøretøyer</td>
+                                    <td class="num-cell">21 600</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">21 600</td>
+                                    <td class="num-cell">24 800</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7020</strong></td>
+                                    <td>Vedlikehold transportmidler</td>
+                                    <td class="num-cell">53 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">53 000</td>
+                                    <td class="num-cell">45 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7040</strong></td>
+                                    <td>Forsikring/avgift kjøretøyer</td>
+                                    <td class="num-cell">39 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">39 000</td>
+                                    <td class="num-cell">43 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7320</strong></td>
+                                    <td>Reklamekostnad</td>
+                                    <td class="num-cell">48 900</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">48 900</td>
+                                    <td class="num-cell">38 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7350</strong></td>
+                                    <td>Representasjon, fradragsberettiget</td>
+                                    <td class="num-cell">6 300</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">6 300</td>
+                                    <td class="num-cell">8 600</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7360</strong></td>
+                                    <td>Representasjon, ikke fradragsberettiget</td>
+                                    <td class="num-cell">6 800</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">6 800</td>
+                                    <td class="num-cell">14 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7400</strong></td>
+                                    <td>Kontingent, fradragsberettiget</td>
+                                    <td class="num-cell">5 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">5 000</td>
+                                    <td class="num-cell">6 400</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7410</strong></td>
+                                    <td>Kontingent, ikke fradragsberettiget</td>
+                                    <td class="num-cell">6 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">6 000</td>
+                                    <td class="num-cell">5 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7500</strong></td>
+                                    <td>Forsikringer</td>
+                                    <td class="num-cell">42 200</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">42 200</td>
+                                    <td class="num-cell">46 200</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7550</strong></td>
+                                    <td>Garantikostnad</td>
+                                    <td class="num-cell">104 000</td>
+                                    <td class="num-cell">10 000</td>
+                                    <td class="num-cell">114 000</td>
+                                    <td class="num-cell">42 100</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7790</strong></td>
+                                    <td>Annen kostnad, fradra</td>
+                                    <td class="num-cell">45 755</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">45 755</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7830</strong></td>
+                                    <td>Tap på fordringer</td>
+                                    <td class="num-cell">76 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">76 000</td>
+                                    <td class="num-cell">33 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7839</strong></td>
+                                    <td>Endring i avsetning for forventet tap</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">9 000</td>
+                                    <td class="num-cell">9 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>7880</strong></td>
+                                    <td>Tap avgang immatr. eiend. og varige dr.m</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">19 000</td>
+                                    <td class="num-cell">19 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8050</strong></td>
+                                    <td>Annen renteinntekt</td>
+                                    <td class="num-cell">-5 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-5 000</td>
+                                    <td class="num-cell">-20 500</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8071</strong></td>
+                                    <td>Aksjeutbytte fra norske foretak</td>
+                                    <td class="num-cell">-12 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-12 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8072</strong></td>
+                                    <td>Verdiendring markedsbaserte aksjer</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-20 000</td>
+                                    <td class="num-cell">-20 000</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8150</strong></td>
+                                    <td>Annen rentekostnad</td>
+                                    <td class="num-cell">180 000</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">180 000</td>
+                                    <td class="num-cell">195 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8300</strong></td>
+                                    <td>Betalbar skatt</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">123 129</td>
+                                    <td class="num-cell">123 129</td>
+                                    <td class="num-cell">239 389</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8320</strong></td>
+                                    <td>Endring utsatt skatt</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">11 635</td>
+                                    <td class="num-cell">11 635</td>
+                                    <td class="num-cell">-37 471</td>
+                                </tr>
+                                <tr class="row-eval" onclick="selectAccount(this, '8920', 'Avsatt utbytte', '0', '0', '0', '1 000 000')">
+                                    <td><strong>8920</strong> <span class="badge-eval">Vurdering</span></td>
+                                    <td>Avsatt utbytte</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">1 000 000</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8960</strong></td>
+                                    <td>Avsatt til annen egenkapital</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">496 636</td>
+                                    <td class="num-cell">496 636</td>
+                                    <td class="num-cell">0</td>
+                                </tr>
+                                <tr class="" >
+                                    <td><strong>8961</strong></td>
+                                    <td>Overføring fra annen egenkapital</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">0</td>
+                                    <td class="num-cell">-304 108</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr style="font-weight: 700; background: rgba(255, 255, 255, 0.08); border-top: 2px solid rgba(255, 255, 255, 0.15); border-bottom: 2px solid rgba(255, 255, 255, 0.15); font-size: 0.9rem;">
+                                    <td></td>
+                                    <td style="color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px;">Kontrollsum</td>
+                                    <td class="num-cell" style="color: #34d399; font-family: var(--font-mono);">0</td>
+                                    <td class="num-cell" style="color: #34d399; font-family: var(--font-mono);">0</td>
+                                    <td class="num-cell" style="color: #34d399; font-family: var(--font-mono);">0</td>
+                                    <td class="num-cell" style="color: #34d399; font-family: var(--font-mono);">0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Comment card -->
+                <div class="card comment-panel" id="saldobalanse-comment-card">
+                    <!-- Loaded dynamically via JS. Default state populated by script. -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: ADVICE & WORKPLACE (HMS) -->
+        <section id="advice" class="tab-content">
+            <div class="grid-2">
+                <!-- Rådgivning -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-lightbulb"></i> Strategiske råd til styret for 2026</h3>
+                    </div>
+                    
+                    <div class="advice-list">
+                        <div class="advice-item">
+                            <i class="fa-solid fa-snowflake advice-icon" style="color: var(--accent-red);"></i>
+                            <div class="advice-text">
+                                <h4>1. Prioritere likviditet fremfor utbytte</h4>
+                                <p>Selskapet bør som et absolutt minimum ha nok omløpsmidler til å betjene kortsiktig gjeld, altså en likviditetsgrad 1 over 1,0, og helst over 2,0. Foretaket har per i dag en Likviditetsgrad1 på kun 0,66. Styret bør fryse utbytte inntil selskapet har etablert en tilstrekkelig likviditetsbuffer.</p>
+                            </div>
+                        </div>
+
+                        <div class="advice-item">
+                            <i class="fa-solid fa-building-columns advice-icon"></i>
+                            <div class="advice-text">
+                                <h4>2. Etablere langsiktig rammelån på bygget</h4>
+                                <p>Selskapet har et verdifullt næringsbygg bokført to 4,0M, mens skattemessig markedsverdi er 10,5M. Langsiktig gjeld er kun 3,0M. Styret bør vurdere muligheten for å øke pantelån/rammelån på eiendommen for å betale ned leverandørgjeld. Dette vil kunne sikre likviditetsutfordringene fra punkt 1.</p>
+                            </div>
+                        </div>
+
+                        <div class="advice-item">
+                            <i class="fa-solid fa-boxes-stacked advice-icon"></i>
+                            <div class="advice-text">
+                                <h4>3. Evaluere varelagerets ukurans og innkjøpsavtaler</h4>
+                                <p>Det er bokført en ukuransavsetning på over 16 % (65 000 kr) på slitedeler. Samtidig er omløpstiden på varelageret kun 41 dager. Dette indikerer at selskapet sitter på gammelt ukurant varelager som opptar plass og kapital. Selskapet bør vurdere om varelager for slitedeler er for stort eller om det kjøpes inn for sjeldne slitedeler.</p>
+                            </div>
+                        </div>
+
+                        <div class="advice-item">
+                            <i class="fa-solid fa-file-signature advice-icon"></i>
+                            <div class="advice-text">
+                                <h4>4. Gjennomgå garanti til tillitsvalgt (Note 1)</h4>
+                                <p>Selskapet har garantert for 200 000 kr for et privat lån til hovedtillitsvalgt. Styret bør formalisere denne avtalen og forsikre seg om at det foreligger tilstrekkelig sikkerhet slik at selskapet ikke lider tap dersom lånet misligholdes.</p>
+                            </div>
+                        </div>
+
+                        <div class="advice-item">
+                            <i class="fa-solid fa-arrow-trend-down advice-icon" style="color: var(--accent-red);"></i>
+                            <div class="advice-text">
+                                <h4>5. Fokus på kostnadskontroll</h4>
+                                <p>Driftsresultatet har ikke holdt tritt med de økende driftsinntektene de siste 5 årene, og er i 2025 på sitt laveste punkt i perioden - ned 28% fra året før.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noter til årsregnskapet -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fa-solid fa-file-invoice-dollar"></i> Noter til årsregnskapet</h3>
+                    </div>
+
+                    <div class="notes-container" style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 0.5rem;">
+                        <!-- Note 1 -->
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-users-gears"></i> Note 1: Lønnskostnader, årsverk og godtgjørelser
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.75rem;">
+                                Selskapet har i 2025 sysselsatt <strong>5 årsverk</strong>. Samlede lønnskostnader utgjorde <strong>4 174 835 kr</strong> (opp fra 4 001 932 kr i 2024).
+                            </p>
+                            <ul style="font-size: 0.85rem; color: var(--text-muted); padding-left: 1.25rem; line-height: 1.6; margin-bottom: 0.75rem;">
+                                <li><strong>Daglig leder:</strong> Lønn på 500 000 kr og annen godtgjørelse på 40 000 kr.</li>
+                                <li><strong>Styret:</strong> Styregodtgjørelse på 35 000 kr.</li>
+                            </ul>
+                            <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid var(--accent-orange); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.8rem; color: #fff;">
+                                <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-orange); margin-right: 6px;"></i>
+                                <strong>Lånegaranti:</strong> Selskapet har stilt <strong>200 000 kr</strong> i sikkerhet for et privat lån til hovedtillitsvalgt.
+                            </div>
+                        </div>
+
+                        <!-- Note 2 -->
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-building-circle-check"></i> Note 2: Anleggsmidler og avskrivninger
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.75rem;">
+                                Selskapets driftsmidler er vurdert til anskaffelseskost med fradrag for ordinære avskrivninger:
+                            </p>
+                            <table style="width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: left; color: var(--text-muted);">
+                                <thead>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08); color: #fff;">
+                                        <th style="padding: 6px 0;">Kategori</th>
+                                        <th style="padding: 6px 0; text-align: right;">Anskaffelseskost</th>
+                                        <th style="padding: 6px 0; text-align: right;">Bokført verdi</th>
+                                        <th style="padding: 6px 0; text-align: right;">Øk. levetid</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.03);">
+                                        <td style="padding: 6px 0;">Bygninger og eiendom</td>
+                                        <td style="padding: 6px 0; text-align: right;">6 886 875 kr</td>
+                                        <td style="padding: 6px 0; text-align: right; color:#fff; font-weight:600;">4 025 475 kr</td>
+                                        <td style="padding: 6px 0; text-align: right;">50 år</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0;">Driftsløsøre, inventar, verktøy</td>
+                                        <td style="padding: 6px 0; text-align: right;">2 210 000 kr</td>
+                                        <td style="padding: 6px 0; text-align: right; color:#fff; font-weight:600;">1 472 700 kr</td>
+                                        <td style="padding: 6px 0; text-align: right;">5-25 år</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem; font-style: italic;">
+                                * Det ble foretatt et avgangssalg (salg av biler) i 2025 med en salgsgevinst på 151 600 kr.
+                            </p>
+                        </div>
+
+                        <!-- Note 3 -->
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-chart-line"></i> Note 3: Markedsbaserte aksjer
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                                Aksjeporteføljen har en anskaffelseskost på <strong>330 000 kr</strong> og er verdsatt til markedsverdi på balansedagen, totalt <strong>400 000 kr</strong>. Dette medførte en urealisert gevinst (verdiendring) på <strong>20 000 kr</strong> resultatført i 2025.
+                            </p>
+                        </div>
+
+                        <!-- Note 4 -->
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-shield-halved"></i> Note 4: Fordringer og gjeld (Pantesikkerhet)
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.75rem;">
+                                Selskapets langsiktige gjeld med forfall over 5 år utgjør <strong>3 000 000 kr</strong>.
+                            </p>
+                            <div style="background: rgba(52, 211, 153, 0.08); border-left: 3px solid var(--accent-green); padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.8rem; color: #fff;">
+                                <i class="fa-solid fa-circle-check" style="color: var(--accent-green); margin-right: 6px;"></i>
+                                <strong>Ubelånte eiendeler:</strong> Gjeld sikret ved pant utgjør <strong>0 kr</strong>, og balanseført verdi av pantsatte eiendeler utgjør <strong>0 kr</strong>. Dette bekrefter at næringsbygget er helt uheftet og tilgjengelig for pantesikkerhet.
+                            </div>
+                        </div>
+
+                        <!-- Note 5 -->
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 1.25rem; border-radius: 12px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 0.75rem; color: var(--primary); display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-diagram-project"></i> Note 5: Eierstruktur og aksjonærer
+                            </h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 0.5rem;">
+                                Aksjekapitalen på 500 000 kr består av 500 ordinære aksjer, og eies 50/50 av styremedlemmene:
+                            </p>
+                            <div style="display: flex; gap: 15px; font-size: 0.8rem; color: var(--text-muted);">
+                                <div style="flex: 1; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                                    <strong style="color: #fff;">Erik Hanssen</strong><br>
+                                    Styreleder &bull; 250 aksjer (50,0 %)
+                                </div>
+                                <div style="flex: 1; background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);">
+                                    <strong style="color: #fff;">Berte Jensen</strong><br>
+                                    Styremedlem &bull; 250 aksjer (50,0 %)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer style="margin-top: 4rem; padding: 2.5rem 0 1.5rem 0; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem; color: var(--text-muted); text-align: center; line-height: 1.6;">
+        <strong>Bil og Dekkservice AS</strong> &bull; Årsregnskapsanalyse 2025 &bull; Styrepresentasjon<br>
+        <span style="font-size: 0.75rem; opacity: 0.7;">Copyright og design &copy; 2026 Oscar Troy Arntzen &bull; Alle rettigheter reservert</span>
+    </footer>
+</main>
+
+    <script>
+        // Data arrays for Chart JS
+        const years = ['2021', '2022', '2023', '2024', '2025'];
+        const revenues = [10251119, 10790651, 11358580, 11956400, 11750452];
+        const ebit = [997199, 1038634, 1166865, 1072310, 774400];
+        
+        const longTermDebt = [5400000, 4800000, 4200000, 3600000, 3000000];
+        const cashBalances = [1416100, 1455073, 1008392, 776500, 511971];
+
+        // EKR and TKR ratios from SREG350-1 25H Arbeidskrav 2.pdf (and aligned 2021 & 2025)
+        const ekr = [75.2, 109.6, 123.1, 102.6, 51.3];
+        const tkr = [12.4, 13.2, 15.6, 14.5, 10.8];
+
+        let revChart, liqChart, rentChart;
+
+        // Initialize Charts on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateSimulation();
+        });
+
+        function initCharts() {
+            // Chart 1: Revenue vs EBIT
+            const ctx1 = document.getElementById('revenueChart').getContext('2d');
+            revChart = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Driftsinntekter (kr)',
+                            data: revenues,
+                            backgroundColor: 'rgba(0, 198, 255, 0.4)',
+                            borderColor: '#00c6ff',
+                            borderWidth: 2,
+                            borderRadius: 6,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Driftsresultat - EBIT (kr)',
+                            data: ebit,
+                            type: 'line',
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#8b5cf6',
+                            tension: 0.3,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' },
+                            title: { display: true, text: 'Inntekter (NOK)', color: '#9ca3af' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            grid: { drawOnChartArea: false },
+                            ticks: { color: '#9ca3af' },
+                            title: { display: true, text: 'EBIT (NOK)', color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Liquidity vs Long Term Debt
+            const ctx2 = document.getElementById('liquidityGjeldChart').getContext('2d');
+            liqChart = new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Langsiktig gjeld (kr)',
+                            data: longTermDebt,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.2
+                        },
+                        {
+                            label: 'Bankinnskudd (kr)',
+                            data: cashBalances,
+                            borderColor: '#10b981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' },
+                            title: { display: true, text: 'Beløp (NOK)', color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+
+            // Chart: Rentabilitet (EKR vs TKR)
+            const ctxRent = document.getElementById('rentabilityChart').getContext('2d');
+            rentChart = new Chart(ctxRent, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Egenkapitalrentabilitet (EKR) (%)',
+                            data: ekr,
+                            borderColor: '#00f2fe',
+                            backgroundColor: 'rgba(0, 242, 254, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.3,
+                            pointBackgroundColor: '#00f2fe',
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' },
+                            title: { display: true, text: 'Prosent (%)', color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+
+            // Chart 3: Cash Flow breakdown for 2025
+            const ctx3 = document.getElementById('cashflowChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'bar',
+                data: {
+                    labels: ['Operasjonell drift', 'Investeringer', 'Nedbetaling lån & utbytte', 'Netto endring'],
+                    datasets: [{
+                        label: 'Kontantstrøm 2025 (kr)',
+                        data: [1582346, -746875, -1100000, -264529],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.5)',  // Emerald
+                            'rgba(239, 68, 68, 0.5)',   // Red
+                            'rgba(239, 68, 68, 0.5)',   // Red
+                            'rgba(245, 158, 11, 0.5)'   // Amber
+                        ],
+                        borderColor: [
+                            '#10b981',
+                            '#ef4444',
+                            '#ef4444',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        },
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Switch Tabs logic
+        function switchTab(tabId, el) {
+            // Update active menu item
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            el.classList.add('active');
+
+            // Hide/Show tab contents
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+
+            // Update page headers
+            const titleEl = document.getElementById('page-title');
+            const subtitleEl = document.getElementById('page-subtitle');
+            
+            if (tabId === 'dashboard') {
+                titleEl.textContent = 'Styredashbord & Finansielle Trender';
+                subtitleEl.textContent = 'Finansiell status og 5-årshistorikk (2021 - 2025) for styret i Bil og Dekkservice AS';
+            } else if (tabId === 'statements') {
+                titleEl.textContent = 'Resultatregnskap & Balanse';
+                subtitleEl.textContent = 'Interaktiv regnskapsoversikt for 2024 og 2025 med vertikal analyse';
+            } else if (tabId === 'cashflow') {
+                titleEl.textContent = 'Likviditetsanalyse & Kontantstrøm';
+                subtitleEl.textContent = 'Gjennomgang av periodens kontantstrøm basert på indirekte metode';
+            } else if (tabId === 'simulator') {
+                titleEl.textContent = 'Styremedlemmenes Likviditetskalkulator';
+                subtitleEl.textContent = 'Test hvordan refinansiering og kredittiltak forbedrer likviditeten';
+            } else if (tabId === 'saldobalanse') {
+                titleEl.textContent = 'Saldobalanse med Vurderinger';
+                subtitleEl.textContent = 'Saldobalanse for 2025 med faglige kommentarer og regnskapsmessige estimatvurderinger';
+            } else if (tabId === 'advice') {
+                titleEl.textContent = 'Styreråd & Regnskapsnoter';
+                subtitleEl.textContent = 'Strategiske anbefalinger for styret og sammendrag av viktige regnskapsnoter';
+            }
+        }
+
+        // Vertical analysis Toggle
+        let currentMode = 'raw';
+        function toggleStatementMode(mode) {
+            currentMode = mode;
+            document.getElementById('btn-raw').classList.toggle('active', mode === 'raw');
+            document.getElementById('btn-pct').classList.toggle('active', mode === 'pct');
+
+            // Update tables
+            updateTable('income-table', mode, 11750452, 11956400); // base is revenue
+            updateTable('balance-table', mode, 7454821, 7617000);  // base is total assets
+        }
+
+        // Toggle Rentability Dataset (EKR vs TKR)
+        function toggleRentabilityDataset(type) {
+            document.getElementById('btn-ekr').classList.toggle('active', type === 'ekr');
+            document.getElementById('btn-tkr').classList.toggle('active', type === 'tkr');
+            
+            const titleEl = document.getElementById('rent-title');
+            
+            if (type === 'ekr') {
+                titleEl.innerHTML = '<i class="fa-solid fa-percent"></i> Rentabilitetsutvikling - EKR (2021-2025)';
+                rentChart.data.datasets[0].data = ekr;
+                rentChart.data.datasets[0].label = 'Egenkapitalrentabilitet (EKR) (%)';
+                rentChart.data.datasets[0].borderColor = '#00f2fe';
+                rentChart.data.datasets[0].backgroundColor = 'rgba(0, 242, 254, 0.1)';
+                rentChart.data.datasets[0].pointBackgroundColor = '#00f2fe';
+            } else {
+                titleEl.innerHTML = '<i class="fa-solid fa-percent"></i> Rentabilitetsutvikling - TKR (2021-2025)';
+                rentChart.data.datasets[0].data = tkr;
+                rentChart.data.datasets[0].label = 'Totalkapitalrentabilitet (TKR) (%)';
+                rentChart.data.datasets[0].borderColor = '#8b5cf6';
+                rentChart.data.datasets[0].backgroundColor = 'rgba(139, 92, 246, 0.1)';
+                rentChart.data.datasets[0].pointBackgroundColor = '#8b5cf6';
+            }
+            rentChart.update();
+        }
+
+        function updateTable(tableId, mode, base2025, base2024) {
+            const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+            rows.forEach(row => {
+                const td2024 = row.cells[1];
+                const td2025 = row.cells[2];
+                if (!td2024 || !td2025) return;
+
+                const val2024 = parseFloat(td2024.getAttribute('data-val'));
+                const val2025 = parseFloat(td2025.getAttribute('data-val'));
+
+                if (isNaN(val2024) || isNaN(val2025)) return;
+
+                if (mode === 'raw') {
+                    td2024.textContent = formatNumber(val2024);
+                    td2024.className = 'num-cell';
+                    td2025.textContent = formatNumber(val2025);
+                    td2025.className = 'num-cell';
+                } else {
+                    const pct2024 = ((val2024 / base2024) * 100).toFixed(1) + ' %';
+                    const pct2025 = ((val2025 / base2025) * 100).toFixed(1) + ' %';
+                    td2024.textContent = pct2024;
+                    td2024.className = 'pct-cell';
+                    td2025.textContent = pct2025;
+                    td2025.className = 'pct-cell';
+                }
+            });
+        }
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('no-NO', { maximumFractionDigits: 0 }).format(num).replace(/,/g, ' ');
+        }
+
+        // Simulator Logic
+        function updateSimulation() {
+            const refiSlider = document.getElementById('input-refi');
+            const dsoSlider = document.getElementById('input-dso');
+
+            const refiAmount = parseInt(refiSlider.value);
+            const dsoReduction = parseInt(dsoSlider.value);
+
+            document.getElementById('val-refi').textContent = formatNumber(refiAmount) + ' kr';
+            document.getElementById('val-dso').textContent = dsoReduction + ' dager';
+
+            // Original 2025 metrics
+            const origCurrentAssets = 1956646;
+            const origCurrentLiabilities = 2950999;
+            const origCash = 511971;
+
+            // Day value calculation: Revenue is 11,750,452. Daily revenue = 11,750,452 / 365 = ~32 193 kr.
+            const cashFromDSO = dsoReduction * 32193;
+
+            // Simulated values
+            const simCurrentLiabilities = Math.max(0, origCurrentLiabilities - refiAmount);
+            const simCash = origCash + cashFromDSO;
+            const simCurrentAssets = origCurrentAssets + cashFromDSO;
+            const simLG = simCurrentAssets / simCurrentLiabilities;
+
+            // Update UI elements
+            const lgEl = document.getElementById('sim-lg');
+            const bankEl = document.getElementById('sim-bank');
+            const kgEl = document.getElementById('sim-kg');
+            const gaugeEl = document.getElementById('gauge-lg');
+
+            kgEl.textContent = formatNumber(simCurrentLiabilities) + ' kr';
+            bankEl.textContent = formatNumber(simCash) + ' kr';
+            lgEl.textContent = simLG.toFixed(2);
+
+            // Add comparison highlights
+            if (simCurrentLiabilities < origCurrentLiabilities) {
+                kgEl.className = 'val-simulated better';
+            } else {
+                kgEl.className = 'val-simulated';
+            }
+
+            if (simCash > origCash) {
+                bankEl.className = 'val-simulated better';
+            } else {
+                bankEl.className = 'val-simulated';
+            }
+
+            // LG 1 color thresholds & Verdict text
+            const verdictBox = document.getElementById('sim-verdict');
+            const verdictTitle = document.getElementById('verdict-title');
+            const verdictDesc = document.getElementById('verdict-desc');
+
+            // Cap the gauge visual presentation
+            const gaugePercent = Math.min(100, (simLG / 1.5) * 100);
+            gaugeEl.style.width = gaugePercent + '%';
+
+            if (simLG < 1.0) {
+                lgEl.className = 'val-simulated worse';
+                verdictBox.className = 'alert-box';
+                verdictTitle.textContent = 'Rød Sone (Kritisk Likviditet)';
+                verdictDesc.textContent = 'Likviditetsgrad 1 er under 1,0. Selskapet har mindre omløpsmidler enn kortsiktig gjeld og klarer ikke å dekke sine løpende forpliktelser.';
+                gaugeEl.style.background = 'linear-gradient(135deg, #f87171, #dc2626)'; // Red
+            } else if (simLG >= 1.0 && simLG < 1.5) {
+                lgEl.className = 'val-simulated warning';
+                verdictBox.className = 'alert-box warning';
+                verdictTitle.textContent = 'Gul Sone (Bedret likviditet)';
+                verdictDesc.textContent = 'Likviditetsgraden er mellom 1,0 og 1,5. Selskapet klarer å dekke kortsiktig gjeld med omløpsmidler, men er fortsatt under den anbefalte normen på 1,5.';
+                gaugeEl.style.background = 'linear-gradient(135deg, #fbbf24, #d97706)'; // Amber
+            } else {
+                lgEl.className = 'val-simulated better';
+                verdictBox.className = 'alert-box success';
+                verdictTitle.textContent = 'Grønn Sone (Sunn likviditet)';
+                verdictDesc.textContent = 'Likviditetsgraden er på eller over den anbefalte normen på 1,5. Selskapet har nå en sunn likviditetsbuffer og god betalingsevne.';
+                gaugeEl.style.background = 'linear-gradient(135deg, #34d399, #059669)'; // Green
+            }
+        }
+
+        // Interactive Comment Card for Saldobalanse
+        const commentsDb = {
+    "2120": {
+        "title": "Konto 2120: Utsatt skatt (Gjeld) / 1070: Utsatt skattefordel",
+        "values": "Endelig 2025: 24 829 kr (gjeld) | Reverserbar økning i 2025: +11 635 kr",
+        "vurdering": "<strong>Faglig vurdering:</strong><br>Utsatt skatt beregnes på midlertidige forskjeller mellom regnskapsmessige og skattemessige verdier. Selskapet har en netto utsatt skatteforpliktelse (gjeld) på 24 829 kr pr. 31.12.2025, som skyldes at de skattemessige verdiene på driftsmidlene (særlig næringsbygget og verktøy) avskrives raskere enn de regnskapsmessige avskrivningene.<br><br><strong>Vurdering av fremførbart underskudd og balanseføring:</strong><br>Selskapet har pr. 31.12.2025 0 kr i skattemessig fremførbart underskudd i skattemeldingen, ettersom skattemessig inntekt endte positivt på 572 638 kr (som gir betalbar skatt på 125 980 kr i skattemeldingen, justert til 123 129 kr i regnskapet).",
+        "anbefaling": "Da selskapet i dag har en utsatt skatteforpliktelse (gjeld) og ikke en fordel, foreligger det ikke noen vurdering bak tallet. Så lenge selskapet fortsetter en sunn drift og går med overskudd er det heller ikke noe som trenger særlig overveiing fra styret."
+    },
+    "1468": {
+        "title": "Konto 1468: Ukuransavsetning slitedeler / 1460: Slitedeler",
+        "values": "Brutto slitedelslager: 400 000 kr | Ukuransavsetning: -65 000 kr | Netto: 335 000 kr",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-2 – Omløpsmidler):</strong><br>Omløpsmidler (inkl. varelager) skal vurderes til laveste av anskaffelseskost og virkelig verdi (laveste verdis prinsipp). Ukuransavsetningen på 65 000 kr utgjør hele 16,25 % av det totale slitedelslageret på 400 000 kr. Dette indikerer at ledelsen estimerer at en betydelig andel av varelageret er uaktuell eller verdiløs.",
+        "anbefaling": "En omløpstid på varelageret på 41 dager er isolert sett god, men det er en latent risiko for at det akkumuleres deler til eldre bilmodeller som sjelden besøker verkstedet lenger, spesielt med tanke på den raske økningen i elbilandelen."
+    },
+    "1580": {
+        "title": "Konto 1580: Avsetning tap kundefordringer / 1500: Kundefordringer",
+        "values": "Brutto fordringer: 575 672 kr | Tapsavsetning: -130 000 kr | Netto: 445 672 kr",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-2 – Omløpsmidler):</strong><br>Kundefordringer skal føres opp til pålydende etter fradrag for avsetning til forventet tap. Tapsavsetningen er økt fra 121 000 kr til 130 000 kr i 2025. Dette utgjør hele 22,6 % av de totale utestående kundefordringene (575 672 kr). Dette fremstår som en svært høy tapsandel.<br><br>En så stor avsetning betyr enten:<br>1. At selskapet har svært svake kredittrutiner og mange dårlige betalere blant privatkunder.<br>2. At det foreligger konkrete og store tvister med forsikringsselskaper eller større bedriftskunder knyttet til utført arbeid.<br>At tap på fordringer (Konto 7830) ble hele 76 000 kr i 2025 (opp fra 33 000 kr i fjor) bekrefter at kredittrisikoen er reell og økende.",
+        "anbefaling": "Dette forholdet krever styreoppfølging.<br>Styret må be ledelsen presentere en aldersfordelt saldoliste over kundefordringene og redegjøre for hvorfor nesten en fjerdedel av kravene vurderes som usikre. Styret bør vedta strengere kredittkrav (f.eks. forhåndsbetaling for privatkunder på større reparasjoner, eller raskere oversendelse til inkasso) for å beskytte selskapets sårbare kontantstrøm."
+    },
+    "2980": {
+        "title": "Konto 2980: Avsetning og forpliktelser (Garantier)",
+        "values": "Endelig 2025: -60 000 kr | Økning i 2025: +10 000 kr | Garantikostnad (7550): 114 000 kr",
+        "vurdering": "<strong>Faglig vurdering (NRS 8 - Små foretak):</strong><br>Garantiforpliktelser er estimerte fremtidige kostnader knyttet til utbedring av feil og mangler på utførte verkstedtjenester og solgte deler. Dette er en skjønnsmessig avsetning som i år er økt med 10 000 kr opp til 60 000 kr.<br><br>Garantikostnaden i resultatregnskapet (Konto 7550) har økt betydelig fra 42 100 kr i 2024 til 114 000 kr i 2025. Dette kan tyde på at det enten har vært utført mye arbeid som krever reklamasjonsretting, eller at 2025 tilfeldigvis hadde mye dyre garantisaker.",
+        "anbefaling": "Styret bør påse at garantiavsetningen på 60 000 kr er tilstrekkelig i lys av den økte garantiaktiviteten. Dersom reklamasjonene fortsetter på dagens nivå, må avsetningen økes i 2026, som igjen vil belaste driftsresultatet."
+    },
+    "1100": {
+        "title": "Konto 1100: Bygninger / 6000: Avskrivning bygg",
+        "values": "Bokført verdi 31.12.2025: 3 525 475 kr | Årets avskrivning: 111 400 kr (lineært, 50 år levetid)",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-3 – Anleggsmidler):</strong><br>Varige driftsmidler (som bygg) skal avskrives etter en fornuftig avskrivningsplan basert på driftsmidlets økonomiske levetid. Regnskapsmessig verdi er 3,5M kr, mens skattemessig markedsverdi på utleieeiendommen i Elverum (Storgata 4) er beregnet til hele 10,49M kr i skattemeldingen (basert på leieinntekt på 360 000 kr fra Tannklinikken AS og justert utleieverdi).<br><br>Dette betyr at selskapet har en stor merverdi i eiendommen på ca. 6-7 millioner kroner som ikke vises i balanseregnskapet. Dette styrker selskapets reelle soliditet betydelig, selv om regnskapsmessig egenkapital kun er 1,48M kr.",
+        "anbefaling": "Styret bør bruke denne merverdien aktivt som sikkerhet for å refinansiere kortsiktig gjeld til et langsiktig rammelån med pantesikkerhet i bygget. Dette kan umiddelbart løse likviditetskrisen og sikre langsiktig driftsfinansiering til gunstige rentebetingelser."
+    },
+    "1230": {
+        "title": "Konto 1230: Biler / 6010: Avskrivning biler",
+        "values": "Bokført verdi 31.12.2025: 450 000 kr | Årets avskrivning: 161 600 kr",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-3 – Anleggsmidler):</strong><br>Biler avskrives basert på estimert økonomisk levetid. Bokført verdi er redusert fra 860 000 kr til 450 000 kr i 2025. Dette skyldes et avgangssalg i året på 840 000 kr (anskaffelseskost) med en regnskapsmessig salgsgevinst på 151 600 kr (inntektsført under konto 3800). Dette indikerer at bilene ble solgt for mer enn sin bokførte verdi, noe som bekrefter at de historiske avskrivningene har vært konservative og korrekte.",
+        "anbefaling": "Avskrivningene på biler vurderes som tilfredsstillende og i tråd med reelt verdifall."
+    },
+    "1270": {
+        "title": "Konto 1270: Verktøy / 6030: Avskrivning verktøy",
+        "values": "Bokført verdi 31.12.2025: 942 700 kr | Årets avskrivning: 50 300 kr",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-3 – Anleggsmidler):</strong><br>Verktøy og maskiner er bokført til 942 700 kr (opp fra 772 000 kr i 2024). Dette skyldes betydelige nyinvesteringer i 2025 (tilgang på 390 000 kr, avskrivning 50 300 kr). Siden dette verktøyet brukes i verksteddriften, må avskrivningene reflektere den økonomiske levetiden.<br><br>Med overgangen til elbiler er det risiko for rask foreldelse av diagnoseutstyr og spesialverktøy. Hvis utstyret avskrives for sakte (avskrivningen i år utgjør kun ca. 5 % av bokført verdi), er det fare for at verdiene i balansen er overvurderte.",
+        "anbefaling": "Styret bør forsikre seg om at avskrivningen er korrekt iht verktøyets økonomiske levetid."
+    },
+    "1250": {
+        "title": "Konto 1250: Inventar / 6020: Avskrivning inventar",
+        "values": "Bokført verdi 31.12.2025: 80 000 kr | Årets avskrivning: 15 000 kr (lineært)",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-3 – Anleggsmidler):</strong><br>Driftsløsøre, inventar og lignende utstyr skal avskrives etter en fornuftig avskrivningsplan over eiendelens økonomiske levetid. Kontoret og kundemottaket har inventar bokført til 80 000 kr etter en regnskapsmessig avskrivning på 15 000 kr i 2025 (som tilsvarer avskrivningsnivået i 2024). Avskrivningen utgjør ca. 15,8 % av inngående verdi, noe som indikerer en estimert gjenværende økonomisk levetid på ca. 5–6 år.",
+        "anbefaling": "Avskrivningssatsen og bokført verdi vurderes som realistisk og i samsvar med inventarets reelle slitasje og levetid. Ingen spesielle styretiltak kreves."
+    },
+    "8920": {
+        "title": "Konto 8920: Avsatt utbytte",
+        "values": "Endelig 2025: 0 kr | Avsatt i fjor (2024): 1 000 000 kr",
+        "vurdering": "<strong>Faglig vurdering (Regnskapsloven &sect; 5-2 – Omløpsmidler / Egenkapital):</strong><br>Selv om selskapet har <strong>fri egenkapital</strong> (annen egenkapital utgjør 978 993 kr pr. 31.12.2025) som juridisk tillater utdeling av utbytte, gjør den anstrengte likviditetssituasjonen i selskapet det umulig å avsette utbytte.<br><br>Likviditetsgrad 1 er på kritiske 0,66, noe som betyr at selskapet ikke har nok likvide midler til å dekke sine løpende kortsiktige forpliktelser. Å vedta utbytteutdeling i en slik situasjon vil stride mot aksjelovens krav om at selskapet skal ha en forsvarlig egenkapital og likviditet, og vil utgjøre en direkte trussel mot foretakets videre drift.",
+        "anbefaling": "Styret bør fryse alt utbytte for 2025. Selv om regnskapet viser opptjente reserver på papiret, betyr den pressede likviditeten at det ikke foreligger reelle midler til å utbetale utbytte uten å risikere betalingsudyktighet."
+    }
+};
+
+        function selectAccount(rowEl, accountNo, accountName, forelopig, oppgjor, endelig, saldo24) {
+            // Remove active class from all rows
+            document.querySelectorAll('.row-eval').forEach(row => row.classList.remove('active-row'));
+            // Add active class to clicked row
+            rowEl.classList.add('active-row');
+
+            const card = document.getElementById('saldobalanse-comment-card');
+            const data = commentsDb[accountNo];
+
+            if (data) {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(10px)';
+                
+                setTimeout(() => {
+                    card.innerHTML = `
+                        <div class="comment-header">
+                            <h4>${data.title}</h4>
+                            <span class="account-badge">${data.values}</span>
+                        </div>
+                        <div class="comment-body">
+                            <h5><i class="fa-solid fa-book-bookmark"></i> Lovmessig og Faglig Vurdering</h5>
+                            <p>${data.vurdering}</p>
+                            
+                            <h5><i class="fa-solid fa-lightbulb"></i> Rådgiverens Anbefaling til Styret</h5>
+                            <p style="color: #fff; background: rgba(0, 242, 254, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary); font-size: 0.85rem; line-height: 1.5;">
+                                ${data.anbefaling}
+                            </p>
+                        </div>
+                    `;
+                    card.style.opacity = 1;
+                    card.style.transform = 'translateY(0)';
+                }, 150);
+            }
+        }
+
+        // Initialize default view for Saldobalanse tab
+        document.addEventListener('DOMContentLoaded', () => {
+            const defaultCard = document.getElementById('saldobalanse-comment-card');
+            if (defaultCard) {
+                const data = commentsDb["2120"];
+                if (data) {
+                    defaultCard.innerHTML = `
+                        <div class="comment-header">
+                            <h4>${data.title}</h4>
+                            <span class="account-badge">${data.values}</span>
+                        </div>
+                        <div class="comment-body">
+                            <h5><i class="fa-solid fa-book-bookmark"></i> Lovmessig og Faglig Vurdering</h5>
+                            <p>${data.vurdering}</p>
+                            
+                            <h5><i class="fa-solid fa-lightbulb"></i> Rådgiverens Anbefaling til Styret</h5>
+                            <p style="color: #fff; background: rgba(0, 242, 254, 0.05); padding: 12px; border-radius: 8px; border-left: 3px solid var(--primary); font-size: 0.85rem; line-height: 1.5;">
+                                ${data.anbefaling}
+                            </p>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
